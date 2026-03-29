@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JLPT Simulator</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+
+<!-- Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 420px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+button {
+  margin: 5px;
+  padding: 12px;
+  width: 90%;
+  border-radius: 10px;
+  border: none;
+  background: #334155;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #475569;
+}
+
+.selected {
+  background: #22c55e !important;
+}
+
+#progress {
+  height: 10px;
+  background: #ef4444;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h3 {
+  margin-top: 15px;
+}
+
+table {
+  margin: auto;
+  color: white;
+}
+
+#game, #dashboard {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= MENU ================= -->
+<div class="card" id="menu">
+  <h1>🎮 JLPT Simulator</h1>
+
+  <h3>Mode</h3>
+  <button onclick="startMode('easy')">Easy</button>
+  <button onclick="startMode('normal')">Normal</button>
+  <button onclick="startMode('hard')">Hard</button>
+
+  <h3>Lesson</h3>
+  <div id="lessonList"></div>
+</div>
+
+<!-- ================= GAME ================= -->
+<div class="card" id="game">
+  <div id="progress"></div>
+
+  <h1 id="question"></h1>
+
+  <div id="choices"></div>
+
+  <h2 id="status"></h2>
+  <h3 id="combo">🔥 Combo: 0</h3>
+
+  <p id="score">Score: 0</p>
+  <p id="accuracy">Accuracy: 0%</p>
+
+  <button onclick="goMenu()">⬅ กลับเมนู</button>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div class="card" id="dashboard">
+  <h1>📊 RESULT</h1>
+
+  <p id="finalScore"></p>
+  <p id="finalAcc"></p>
+
+  <canvas id="chart"></canvas>
+
+  <h3>❌ คำที่ผิด</h3>
+  <table border="1">
+    <tbody id="wrongTable"></tbody>
+  </table>
+
+  <br>
+  <button onclick="startGame()">เล่นอีกครั้ง</button>
+  <button onclick="reviewWrong()">ทบทวนคำผิด</button>
+  <button onclick="goMenu()">⬅ เมนู</button>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script src="game.js"></script>
+
+<!-- ================= SERVICE WORKER ================= -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js")
+    .then(() => console.log("✅ SW Registered"))
+    .catch(err => console.log("❌ SW Error:", err));
+}
+</script>
+
+</body>
+</html>
