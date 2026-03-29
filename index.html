@@ -92,6 +92,9 @@ table {
 
   <h3>Lesson</h3>
   <div id="lessonList"></div>
+
+  <!-- 🔥 ปุ่ม Install -->
+  <button id="installBtn" style="display:none;">📱 ติดตั้งแอป</button>
 </div>
 
 <!-- ================= GAME ================= -->
@@ -133,6 +136,26 @@ table {
 
 <!-- ================= SCRIPT ================= -->
 <script src="game.js"></script>
+
+<!-- ================= INSTALL APP ================= -->
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const btn = document.getElementById("installBtn");
+  btn.style.display = "block";
+
+  btn.onclick = async () => {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    btn.style.display = "none";
+  };
+});
+</script>
 
 <!-- ================= SERVICE WORKER ================= -->
 <script>
