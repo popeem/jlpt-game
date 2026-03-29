@@ -21,9 +21,12 @@ let timerInterval = null;
 let stage = "hira";
 
 // ===================== LOAD
+const DATA_URL = "https://raw.githubusercontent.com/USERNAME/REPO/main/data.json";
+
 async function loadData() {
-  const res = await fetch("data.json");
+  const res = await fetch(DATA_URL);
   data = await res.json();
+}
 
   progress = JSON.parse(localStorage.getItem("progress") || "{}");
   history = JSON.parse(localStorage.getItem("history") || "[]");
