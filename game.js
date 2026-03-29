@@ -21,21 +21,24 @@ let timerInterval = null;
 let stage = "hira";
 
 // ===================== LOAD
-const DATA_URL = "https://raw.githubusercontent.com/popeem/jlpt-game/refs/heads/main/data";
+const DATA_URL = "https://raw.githubusercontent.com/popeem/jlpt-game/main/data.json";
 
 async function loadData() {
   const res = await fetch(DATA_URL);
   data = await res.json();
-}
 
+  // โหลด progress
   progress = JSON.parse(localStorage.getItem("progress") || "{}");
   history = JSON.parse(localStorage.getItem("history") || "[]");
 
+  // init progress
   data.forEach(w => {
     if (!progress[w.kanji]) {
       progress[w.kanji] = { level: 0, wrong: 0 };
     }
   });
+
+  console.log("DATA LOADED:", data); // debug
 }
 
 function save() {
