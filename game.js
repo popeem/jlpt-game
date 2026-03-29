@@ -21,7 +21,7 @@ let timerInterval = null;
 let stage = "hira";
 
 // ===================== LOAD
-const DATA_URL = "https://raw.githubusercontent.com/USERNAME/REPO/main/data.json";
+const DATA_URL = "https://raw.githubusercontent.com/popeem/jlpt-game/refs/heads/main/data";
 
 async function loadData() {
   const res = await fetch(DATA_URL);
