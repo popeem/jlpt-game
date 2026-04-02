@@ -86,17 +86,16 @@ table {
   <h1>📘 Japanese App</h1>
 
   <button onclick="startVocab()">📖 คำศัพท์</button>
-  <button onclick="startGrammar()">🧠 ไวยากรณ์</button>
+  <button onclick="openGrammarMenu()">🧠 ไวยากรณ์</button>
 </div>
 
-<div id="game" style="display:none;">
-  <h2 id="question"></h2>
+<div id="grammarMenu" style="display:none;">
+  <h2>🧠 ไวยากรณ์</h2>
 
-  <div id="choices"></div>
+  <button onclick="startLesson()">📘 เรียน</button>
+  <button onclick="startExercise()">📝 แบบฝึก</button>
 
-  <p id="result"></p>
-
-  <button onclick="backToMenu()">⬅ กลับเมนู</button>
+  <button onclick="backToMenu()">⬅ กลับ</button>
 </div>
 
 <!-- ================= GAME ================= -->
