@@ -6,11 +6,9 @@
 
 <title>JLPT Simulator</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 
-<!-- Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -60,20 +58,15 @@ button:hover {
   border-radius: 5px;
 }
 
-h1 {
-  font-size: 28px;
-}
-
-h3 {
-  margin-top: 15px;
-}
+h1 { font-size: 28px; }
+h3 { margin-top: 15px; }
 
 table {
   margin: auto;
   color: white;
 }
 
-#game, #dashboard {
+#game, #dashboard, #grammarMenu {
   display: none;
 }
 </style>
@@ -85,17 +78,20 @@ table {
 <div id="menu">
   <h1>📘 Japanese App</h1>
 
-  <button onclick="startVocab()">📖 คำศัพท์</button>
+  <button onclick="startGame()">📖 คำศัพท์</button>
   <button onclick="openGrammarMenu()">🧠 ไวยากรณ์</button>
+
+  <button id="installBtn" style="display:none;">📲 Install App</button>
 </div>
 
-<div id="grammarMenu" style="display:none;">
+<!-- ================= GRAMMAR MENU ================= -->
+<div id="grammarMenu">
   <h2>🧠 ไวยากรณ์</h2>
 
-  <button onclick="startLesson()">📘 เรียน</button>
-  <button onclick="startExercise()">📝 แบบฝึก</button>
+  <button onclick="startGrammarLesson()">📘 เรียน</button>
+  <button onclick="startGrammarExercise()">📝 แบบฝึก</button>
 
-  <button onclick="backToMenu()">⬅ กลับ</button>
+  <button onclick="goMenu()">⬅ กลับ</button>
 </div>
 
 <!-- ================= GAME ================= -->
