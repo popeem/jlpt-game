@@ -82,19 +82,21 @@ table {
 <body>
 
 <!-- ================= MENU ================= -->
-<div class="card" id="menu">
-  <h1>🎮 JLPT Simulator</h1>
+<div id="menu">
+  <h1>📘 Japanese App</h1>
 
-  <h3>Mode</h3>
-  <button onclick="startMode('easy')">Easy</button>
-  <button onclick="startMode('normal')">Normal</button>
-  <button onclick="startMode('hard')">Hard</button>
+  <button onclick="startVocab()">📖 คำศัพท์</button>
+  <button onclick="startGrammar()">🧠 ไวยากรณ์</button>
+</div>
 
-  <h3>Lesson</h3>
-  <div id="lessonList"></div>
+<div id="game" style="display:none;">
+  <h2 id="question"></h2>
 
-  <!-- 🔥 ปุ่ม Install -->
-  <button id="installBtn" style="display:none;">📱 ติดตั้งแอป</button>
+  <div id="choices"></div>
+
+  <p id="result"></p>
+
+  <button onclick="backToMenu()">⬅ กลับเมนู</button>
 </div>
 
 <!-- ================= GAME ================= -->
