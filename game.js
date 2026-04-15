@@ -17,14 +17,12 @@ let maxTime = 20;
 let timeLeft = 20;
 let timerInterval = null;
 
-let stage = "hira";
-
-// ===================== DATA URL
-const DATA_URL = "https://raw.githubusercontent.com/popeem/jlpt-game/main/data.json";
+// ✅ สลับตรงนี้
+let questionType = "hira"; // "kanji" หรือ "hira"
 
 // ===================== LOAD
 async function loadData() {
-  const res = await fetch(DATA_URL);
+  const res = await fetch("data.json");
   data = await res.json();
 
   progress = JSON.parse(localStorage.getItem("progress") || "{}");
@@ -35,8 +33,6 @@ async function loadData() {
       progress[w.kanji] = { level: 0, wrong: 0 };
     }
   });
-
-  console.log("DATA:", data);
 }
 
 function save() {
@@ -120,13 +116,14 @@ function nextQuestion() {
   if (queue.length === 0) return showDashboard();
 
   current = queue.shift();
-  document.getElementById("question").innerText = current.kanji;
+
+  // ✅ เปลี่ยนคำถามตามโหมด
+  document.getElementById("question").innerText =
+    current[questionType];
 
   document.getElementById("status").innerText = "";
 
-  stage = "hira";
-  renderHira();
-
+  renderStep1();
   startTimer();
 }
 
@@ -142,7 +139,6 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      total++;
       handleWrong();
       next();
     }
@@ -154,30 +150,30 @@ function updateBar() {
     (timeLeft / maxTime) * 100 + "%";
 }
 
-// ===================== STEP 1 (HIRAGANA)
-function renderHira() {
+// ===================== STEP 1 (Dynamic)
+function renderStep1() {
   const div = document.getElementById("choices");
-  div.innerHTML = "<h3>เลือก Hiragana</h3>";
 
-  let choices = getChoices("hira");
+  let type = questionType === "kanji" ? "hira" : "kanji";
+  div.innerHTML = `<h3>เลือก ${type}</h3>`;
+
+  let choices = getChoices(type);
 
   choices.forEach(c => {
     let btn = document.createElement("button");
     btn.innerText = c;
 
-    btn.onclick = () => selectHira(c);
+    btn.onclick = () => selectStep1(c, type);
 
     div.appendChild(btn);
   });
 }
 
-function selectHira(choice) {
-  if (stage !== "hira") return;
-
+function selectStep1(choice, type) {
   clearInterval(timerInterval);
+  total++;
 
-  if (choice !== current.hira) {
-    total++;
+  if (choice !== current[type]) {
     handleWrong();
     next();
     return;
@@ -185,12 +181,11 @@ function selectHira(choice) {
 
   document.getElementById("status").innerText = "✅ ถูก! ไปต่อ";
 
-  stage = "thai";
   renderThai();
   startTimer();
 }
 
-// ===================== STEP 2 (THAI)
+// ===================== STEP 2
 function renderThai() {
   const div = document.getElementById("choices");
   div.innerHTML = "<h3>เลือกคำแปล</h3>";
@@ -208,10 +203,7 @@ function renderThai() {
 }
 
 function selectThai(choice) {
-  if (stage !== "thai") return;
-
   clearInterval(timerInterval);
-  total++;
 
   if (choice === current.thai) {
     handleCorrect();
@@ -240,7 +232,6 @@ function shuffle(a) {
 function handleCorrect() {
   score++;
   combo++;
-
   document.getElementById("status").innerText = "✅ Correct";
 
   let p = progress[current.kanji];
@@ -250,7 +241,6 @@ function handleCorrect() {
 
 function handleWrong() {
   combo = 0;
-
   document.getElementById("status").innerText = "❌ Wrong";
 
   let p = progress[current.kanji];
@@ -264,20 +254,15 @@ function handleWrong() {
       count: 0
     };
   }
-
   wrongList[current.kanji].count++;
 
   queue.push(current);
 }
 
-// ===================== NEXT FLOW
 function next() {
   updateUI();
   save();
-
-  setTimeout(() => {
-    nextQuestion();
-  }, 500); // 🔥 delay นิดให้ดูผล
+  setTimeout(nextQuestion, 700);
 }
 
 // ===================== UI
@@ -313,14 +298,7 @@ function renderTable() {
   Object.keys(wrongList).forEach(k => {
     let r = wrongList[k];
     let tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${k}</td>
-      <td>${r.hira}</td>
-      <td>${r.thai}</td>
-      <td>${r.count}</td>
-    `;
-
+    tr.innerHTML = `<td>${k}</td><td>${r.hira}</td><td>${r.thai}</td><td>${r.count}</td>`;
     table.appendChild(tr);
   });
 }
