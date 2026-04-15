@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>JLPT Simulator</title>
+
+<!-- ✅ สำคัญ: รองรับมือถือ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -11,41 +15,90 @@ body {
   background: #0f172a;
   color: white;
   text-align: center;
+  margin: 0;
+  padding: 10px;
 }
 
+/* ✅ กล่องหลัก responsive */
 .card {
   background: #1e293b;
   padding: 20px;
   border-radius: 15px;
-  width: 420px;
+
+  width: 95%;
+  max-width: 420px;
+
   margin: auto;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
+/* ✅ ปุ่มเต็มจอ */
 button {
-  margin: 5px;
-  padding: 10px;
-  width: 80%;
+  margin: 6px 0;
+  padding: 12px;
+  width: 100%;
+
   border-radius: 10px;
   border: none;
   background: #334155;
   color: white;
+
   cursor: pointer;
+  font-size: 16px;
 }
 
 .selected {
   background: #22c55e !important;
 }
 
+/* ✅ progress bar */
 #progress {
   height: 10px;
   background: red;
   width: 100%;
   margin-bottom: 10px;
+  border-radius: 10px;
 }
 
+/* ซ่อนหน้า */
 #game, #dashboard {
   display: none;
+}
+
+/* ✅ ขนาดตัวอักษร */
+h1 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+/* ✅ ตาราง */
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 5px;
+  font-size: 14px;
+}
+
+/* ✅ มือถือจอเล็ก */
+@media (max-width: 480px) {
+  .card {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  button {
+    font-size: 15px;
+  }
 }
 </style>
 </head>
@@ -100,6 +153,7 @@ button {
 </div>
 
 <script src="game.js"></script>
+
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js")
@@ -107,5 +161,6 @@ if ("serviceWorker" in navigator) {
     .catch(err => console.log("SW Error", err));
 }
 </script>
+
 </body>
 </html>
