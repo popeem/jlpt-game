@@ -1,14 +1,8 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>JLPT Simulator</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -17,33 +11,26 @@ body {
   background: #0f172a;
   color: white;
   text-align: center;
-  margin: 0;
 }
 
 .card {
   background: #1e293b;
   padding: 20px;
   border-radius: 15px;
-  width: 90%;
-  max-width: 420px;
+  width: 420px;
   margin: auto;
   margin-top: 30px;
 }
 
 button {
   margin: 5px;
-  padding: 12px;
-  width: 90%;
+  padding: 10px;
+  width: 80%;
   border-radius: 10px;
   border: none;
   background: #334155;
   color: white;
   cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #475569;
 }
 
 .selected {
@@ -52,21 +39,12 @@ button:hover {
 
 #progress {
   height: 10px;
-  background: #ef4444;
+  background: red;
   width: 100%;
   margin-bottom: 10px;
-  border-radius: 5px;
 }
 
-h1 { font-size: 28px; }
-h3 { margin-top: 15px; }
-
-table {
-  margin: auto;
-  color: white;
-}
-
-#game, #dashboard, #grammarMenu {
+#game, #dashboard {
   display: none;
 }
 </style>
@@ -74,27 +52,20 @@ table {
 
 <body>
 
-<!-- ================= MENU ================= -->
-<div id="menu">
-  <h1>📘 Japanese App</h1>
+<!-- MENU -->
+<div class="card" id="menu">
+  <h1>🎮 JLPT Simulator</h1>
 
-  <button onclick="startGame()">📖 คำศัพท์</button>
-  <button onclick="openGrammarMenu()">🧠 ไวยากรณ์</button>
+  <h3>Mode</h3>
+  <button onclick="startMode('easy')">Easy</button>
+  <button onclick="startMode('normal')">Normal</button>
+  <button onclick="startMode('hard')">Hard</button>
 
-  <button id="installBtn" style="display:none;">📲 Install App</button>
+  <h3>Lesson</h3>
+  <div id="lessonList"></div>
 </div>
 
-<!-- ================= GRAMMAR MENU ================= -->
-<div id="grammarMenu">
-  <h2>🧠 ไวยากรณ์</h2>
-
-  <button onclick="startGrammarLesson()">📘 เรียน</button>
-  <button onclick="startGrammarExercise()">📝 แบบฝึก</button>
-
-  <button onclick="goMenu()">⬅ กลับ</button>
-</div>
-
-<!-- ================= GAME ================= -->
+<!-- GAME -->
 <div class="card" id="game">
   <div id="progress"></div>
 
@@ -108,60 +79,33 @@ table {
   <p id="score">Score: 0</p>
   <p id="accuracy">Accuracy: 0%</p>
 
-  <button onclick="goMenu()">⬅ กลับเมนู</button>
+  <button onclick="goMenu()">⬅ Menu</button>
 </div>
 
-<!-- ================= DASHBOARD ================= -->
+<!-- DASHBOARD -->
 <div class="card" id="dashboard">
   <h1>📊 RESULT</h1>
-
   <p id="finalScore"></p>
   <p id="finalAcc"></p>
 
   <canvas id="chart"></canvas>
 
-  <h3>❌ คำที่ผิด</h3>
   <table border="1">
     <tbody id="wrongTable"></tbody>
   </table>
 
-  <br>
-  <button onclick="startGame()">เล่นอีกครั้ง</button>
-  <button onclick="reviewWrong()">ทบทวนคำผิด</button>
-  <button onclick="goMenu()">⬅ เมนู</button>
+  <button onclick="startGame()">Play Again</button>
+  <button onclick="reviewWrong()">Review Wrong</button>
+  <button onclick="goMenu()">⬅ Menu</button>
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script src="game.js"></script>
-
-<!-- ================= INSTALL APP ================= -->
-<script>
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  const btn = document.getElementById("installBtn");
-  btn.style.display = "block";
-
-  btn.onclick = async () => {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    btn.style.display = "none";
-  };
-});
-</script>
-
-<!-- ================= SERVICE WORKER ================= -->
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js")
-    .then(() => console.log("✅ SW Registered"))
-    .catch(err => console.log("❌ SW Error:", err));
+    .then(() => console.log("SW Registered"))
+    .catch(err => console.log("SW Error", err));
 }
 </script>
-
 </body>
 </html>
